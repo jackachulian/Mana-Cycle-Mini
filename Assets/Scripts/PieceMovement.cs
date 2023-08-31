@@ -12,9 +12,11 @@ public class PieceMovement : MonoBehaviour
     [SerializeField] private float fallDelay = 0.8f;
     [SerializeField] private float quickFallDelay = 0.1f;
 
-    private Board board;
+    public Board board { get; private set; }
 
     private float fallTimer;
+
+    private bool quickFallInputted;
 
     private void Awake()
     {
@@ -30,18 +32,9 @@ public class PieceMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Left/right
-        if (board.controller.LeftPressed())
-        {
-            board.MovePiece(-1, 0);
-        } else if (board.controller.RightPressed())
-        {
-            board.MovePiece(1, 0);
-        }
-
         // Falling
         fallTimer += Time.deltaTime;
-        float delay = board.controller.IsQuickFalling() ? quickFallDelay : fallDelay;
+        float delay = quickFallInputted ? quickFallDelay : fallDelay;
         if (fallTimer >= delay)
         {
             bool moved = board.MovePiece(0, -1);
@@ -51,5 +44,10 @@ public class PieceMovement : MonoBehaviour
             }
             fallTimer = 0;
         }
+    }
+
+    public void SetQuickFall(bool quickFall)
+    {
+        quickFallInputted = quickFall;
     }
 }

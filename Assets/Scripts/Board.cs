@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    [SerializeField] private IBoardController _controller;
-    public IBoardController controller { get { return _controller; } }
-
     [SerializeField] private GameObject piecePrefab;
 
     [SerializeField] private Transform manaTileGridTransform;
 
     // Tile dimensions of this board.
     private int width = 8;
-    private int height = 16;
+    private int height = 20;
 
     private static Vector2Int pieceSpawnPos = new Vector2Int(3, 15);
+
+    public PieceMovement pieceMovement { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
     private ManaTile[,] tiles;
@@ -23,9 +22,16 @@ public class Board : MonoBehaviour
     // Piece this board is currently dropping
     private Piece piece;
 
+    private void Reset()
+    {
+        pieceMovement = GetComponent<PieceMovement>();
+        if (!pieceMovement) pieceMovement = new PieceMovement();
+    }
+
     void Awake()
     {
         tiles = new ManaTile[width, height];
+        pieceMovement = GetComponent<PieceMovement>();
     }
 
     void Start()

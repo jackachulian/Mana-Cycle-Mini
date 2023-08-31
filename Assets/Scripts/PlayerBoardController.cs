@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerBoardController : IBoardController
+public class PlayerBoardController : MonoBehaviour
 {
+    [SerializeField] private Board board;
+
     [SerializeField] private float repeatStartDelay = 0.4f;
     [SerializeField] private float repeatDelay = 0.1f;
 
@@ -11,38 +13,26 @@ public class PlayerBoardController : IBoardController
         None, Left, Right
     }
     private RepeatMode repeatMode;
+
     private float repeatStartTimer;
     private float repeatTimer;
 
     private void Update()
     {
-        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) < 0.5f)
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (horizontalInput < -0.5f)
+        {
+            if (HandleRepeatInput(RepeatMode.Left)) board.MovePiece(-1, 0);
+        } else if (horizontalInput > 0.5f)
+        {
+            if (HandleRepeatInput(RepeatMode.Right)) board.MovePiece(1, 0);
+        } else
         {
             repeatMode = RepeatMode.None;
         }
-    }
 
-    public override bool IsQuickFalling()
-    {
-        return Input.GetAxisRaw("Vertical") < -0.5f;
-    }
-
-    public override bool LeftPressed()
-    {
-        if (Input.GetAxisRaw("Horizontal") < -0.5f)
-        {
-            return HandleRepeatInput(RepeatMode.Left);
-        } 
-        return false;
-    }
-
-    public override bool RightPressed()
-    {
-        if (Input.GetAxisRaw("Horizontal") > 0.5f)
-        {
-            return HandleRepeatInput(RepeatMode.Right);
-        }
-        return false;
+        float verticalInput = Input.GetAxisRaw("Vertical");
+        board.pieceMovement.SetQuickFall(verticalInput < -0.5f);
     }
 
     private bool HandleRepeatInput(RepeatMode handleRepeatMode)
@@ -53,7 +43,8 @@ public class PlayerBoardController : IBoardController
             repeatStartTimer = 0;
             // set to timer end value, so that repeat will happen right when repeatStartTimer finihes, and then use repeatDelay from there
             repeatTimer = repeatDelay;
-            return true; // input once before starting repeat start timer
+
+            return true;
         }
 
         if (repeatStartTimer < repeatStartDelay)
