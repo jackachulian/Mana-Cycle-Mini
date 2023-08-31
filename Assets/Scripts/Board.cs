@@ -7,19 +7,30 @@ public class Board : MonoBehaviour
     [SerializeField] private IBoardController _controller;
     public IBoardController controller { get { return _controller; } }
 
+    [SerializeField] private GameObject piecePrefab;
+
+    [SerializeField] private Transform manaTileGridTransform;
+
     // Tile dimensions of this board.
     private int width = 8;
     private int height = 16;
 
+    private static Vector2Int pieceSpawnPos = new Vector2Int(3, 15);
+
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
-    private Tile[,] tiles;
+    private ManaTile[,] tiles;
 
     // Piece this board is currently dropping
     private Piece piece;
 
     void Awake()
     {
-        tiles = new Tile[width, height];
+        tiles = new ManaTile[width, height];
+    }
+
+    void Start()
+    {
+        SpawnNextPiece();
     }
 
     void Update()
@@ -53,12 +64,25 @@ public class Board : MonoBehaviour
     /// </summary>
     public void PlacePiece()
     {
-        foreach (Tile tile in piece.tiles)
+        foreach (ManaTile tile in piece.tiles)
         {
             var pos = piece.PieceToBoard(tile.pos);
-            tile.transform.SetParent(transform);
-            tile.transform.localPosition = new Vector3(pos.x, pos.y);
+
+            tile.transform.SetParent(manaTileGridTransform);
+            tile.transform.localPosition = new Vector3(pos.x+0.5f, pos.y+0.5f);
+
+            tiles[pos.x, pos.y] = tile;
         }
         Destroy(piece.gameObject);
+
+        SpawnNextPiece();
+    }
+
+    public void SpawnNextPiece()
+    {
+        GameObject pieceObject = Instantiate(piecePrefab, manaTileGridTransform);
+        piece = pieceObject.GetComponent<Piece>();
+        piece.SetPosition(pieceSpawnPos);
+        piece.UpdatePositions();
     }
 }

@@ -49,6 +49,7 @@ public class PieceMovement : MonoBehaviour
             {
                 board.PlacePiece();
             }
+            fallTimer = 0;
         }
     }
 }

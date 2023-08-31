@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public interface IBoardController
+public abstract class IBoardController : MonoBehaviour
 {
-    public bool IsQuickFalling();
+    public abstract bool IsQuickFalling();
 
-    public bool LeftPressed();
+    public abstract bool LeftPressed();
 
-    public bool RightPressed();
+    public abstract bool RightPressed();
 }

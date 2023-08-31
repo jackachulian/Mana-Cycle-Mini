@@ -10,25 +10,34 @@ public class Piece : MonoBehaviour
     public Orienetation orienetation;
 
     // All tiles connected to this piece
-    [SerializeField] private Tile[] _tiles;
-    public Tile[] tiles { get { return _tiles; } }
+    [SerializeField] private ManaTile[] _tiles;
+    public ManaTile[] tiles { get { return _tiles; } }
 
     // Offset the piece in the board by the given X and Y values.
+    // Note: does not check for overlaps with board!
+    // Use MovePiece() in the Board to move the piece correctly.
     public void Move(Vector2Int offset)
     {
         pos += offset;
     }
 
-    // Returns true if none of this piece's tiles have the same position as anyy tile in the passed array.
-    public bool IsValidPlacement(Tile[,] otherTiles)
+    public void SetPosition(Vector2Int pos)
     {
-        foreach (Tile tile in _tiles)
+        this.pos = pos;
+    }
+
+    // Returns true if none of this piece's tiles have the same position as anyy tile in the passed array.
+    public bool IsValidPlacement(ManaTile[,] otherTiles)
+    {
+        foreach (ManaTile tile in _tiles)
         {
             Vector2Int boardPos = PieceToBoard(tile.pos);
-            if (otherTiles[boardPos.x, boardPos.y] != null)
-            {
-                return false;
-            }
+
+            // check for tile OOB
+            if (boardPos.x < 0 || boardPos.x >= otherTiles.GetLength(0) || boardPos.y < 0 || boardPos.y >= otherTiles.GetLength(1)) return false;
+
+            // check for overlapping tile
+            if (otherTiles[boardPos.x, boardPos.y] != null) return false;
         }
 
         return true;
@@ -55,7 +64,7 @@ public class Piece : MonoBehaviour
     // Intended to be called after this piece moves.
     public void UpdatePositions()
     {
-        foreach (Tile tile in _tiles)
+        foreach (ManaTile tile in _tiles)
         {
             var pos = PieceToBoard(tile.pos);
             tile.transform.localPosition = new Vector3(pos.x, pos.y);

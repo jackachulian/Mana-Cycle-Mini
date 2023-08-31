@@ -1,25 +1,33 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerBoardController : MonoBehaviour, IBoardController
+public class PlayerBoardController : IBoardController
 {
     [SerializeField] private float repeatStartDelay = 0.4f;
     [SerializeField] private float repeatDelay = 0.1f;
 
     private enum RepeatMode
     {
-        Left, Right
+        None, Left, Right
     }
     private RepeatMode repeatMode;
     private float repeatStartTimer;
     private float repeatTimer;
 
-    public bool IsQuickFalling()
+    private void Update()
+    {
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) < 0.5f)
+        {
+            repeatMode = RepeatMode.None;
+        }
+    }
+
+    public override bool IsQuickFalling()
     {
         return Input.GetAxisRaw("Vertical") < -0.5f;
     }
 
-    public bool LeftPressed()
+    public override bool LeftPressed()
     {
         if (Input.GetAxisRaw("Horizontal") < -0.5f)
         {
@@ -28,7 +36,7 @@ public class PlayerBoardController : MonoBehaviour, IBoardController
         return false;
     }
 
-    public bool RightPressed()
+    public override bool RightPressed()
     {
         if (Input.GetAxisRaw("Horizontal") > 0.5f)
         {
@@ -60,7 +68,7 @@ public class PlayerBoardController : MonoBehaviour, IBoardController
                 return true;
             }
 
-            repeatDelay += Time.deltaTime;
+            repeatTimer += Time.deltaTime;
         }
 
         return false;
