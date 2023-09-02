@@ -21,26 +21,21 @@ public class Piece : MonoBehaviour
         pos += offset;
     }
 
+    // Rotate without verifying that new rotation is valid.
+    public void RotateCCW()
+    {
+        orienetation = (Orienetation)(((int)orienetation + 3) % 4);
+    }
+
+    public void RotateCW()
+    {
+        orienetation = (Orienetation)(((int)orienetation + 1) % 4);
+    }
+
+    // Set position without checking that position is valid.
     public void SetPosition(Vector2Int pos)
     {
         this.pos = pos;
-    }
-
-    // Returns true if none of this piece's tiles have the same position as anyy tile in the passed array.
-    public bool IsValidPlacement(ManaTile[,] otherTiles)
-    {
-        foreach (ManaTile tile in _tiles)
-        {
-            Vector2Int boardPos = PieceToBoard(tile.pos);
-
-            // check for tile OOB
-            if (boardPos.x < 0 || boardPos.x >= otherTiles.GetLength(0) || boardPos.y < 0 || boardPos.y >= otherTiles.GetLength(1)) return false;
-
-            // check for overlapping tile
-            if (otherTiles[boardPos.x, boardPos.y] != null) return false;
-        }
-
-        return true;
     }
 
     // Convert a contained tile int position from this piece's coordinate space to tile board space using this piece's position..
@@ -49,7 +44,7 @@ public class Piece : MonoBehaviour
         switch(orienetation)
         {
             case Orienetation.Up:
-                return new Vector2Int(pos.x, pos.y) + this.pos;
+                return pos + this.pos;
             case Orienetation.Left:
                 return new Vector2Int(-pos.y, pos.x) + this.pos;
             case Orienetation.Down:

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class Board : MonoBehaviour
 
     private static Vector2Int pieceSpawnPos = new Vector2Int(3, 15);
 
-    public PieceMovement pieceMovement { get; private set; }
+    public PieceFalling pieceMovement { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
     private ManaTile[,] tiles;
@@ -24,14 +26,14 @@ public class Board : MonoBehaviour
 
     private void Reset()
     {
-        pieceMovement = GetComponent<PieceMovement>();
-        if (!pieceMovement) pieceMovement = new PieceMovement();
+        pieceMovement = GetComponent<PieceFalling>();
+        if (!pieceMovement) pieceMovement = new PieceFalling();
     }
 
     void Awake()
     {
         tiles = new ManaTile[width, height];
-        pieceMovement = GetComponent<PieceMovement>();
+        pieceMovement = GetComponent<PieceFalling>();
     }
 
     void Start()
@@ -44,20 +46,37 @@ public class Board : MonoBehaviour
 
     }
 
+    // Returns true if none of the current piece's tiles have the same position as any tile on the board.
+    public bool IsValidPlacement()
+    {
+        foreach (ManaTile tile in piece.tiles)
+        {
+            Vector2Int boardPos = piece.PieceToBoard(tile.pos);
+
+            // check for tile OOB
+            if (boardPos.x < 0 || boardPos.x >= width || boardPos.y < 0 || boardPos.y >= height) return false;
+
+            // check for overlapping tile
+            if (tiles[boardPos.x, boardPos.y] != null) return false;
+        }
+
+        return true;
+    }
+
     // Attempt to move the current piece.
     // Returns true if the piece was successfully moved to the new position.
     // False if a tile is blocking the piece from entering this position.
     public bool MovePiece(Vector2Int offset)
     {
         piece.Move(offset);
-        bool valid = piece.IsValidPlacement(tiles);
-        if (!valid)
+        if (!IsValidPlacement())
         {
             piece.Move(-offset);
+            return false;
         }
 
         piece.UpdatePositions();
-        return valid;
+        return true;
     }
     
     public bool MovePiece(int x, int y)
@@ -65,20 +84,57 @@ public class Board : MonoBehaviour
         return MovePiece(new Vector2Int(x, y));
     }
 
+    public void RotatePieceCCW()
+    {
+        piece.RotateCCW();
+
+        bool valid = IsValidPlacement();
+
+        if (!valid) valid = MovePiece(-1, 0);
+        if (!valid) valid = MovePiece(1, 0);
+        if (!valid) valid = MovePiece(0, 1);
+
+        if (!valid) piece.RotateCW();
+    }
+
+    public void RotatePieceCW()
+    {
+        piece.RotateCW();
+
+        bool valid = IsValidPlacement();
+
+        if (!valid) valid = MovePiece(1, 0);
+        if (!valid) valid = MovePiece(-1, 0);
+        if (!valid) valid = MovePiece(0, 1);
+
+        if (!valid) piece.RotateCCW();
+    }
+
     /// <summary>
     /// Place the piece that is currently falling on this board, destroy the piece container object, and spawn the next piece.
     /// </summary>
     public void PlacePiece()
     {
+        // Sort tiles by height
+        Array.Sort(piece.tiles, CompareHeight);
+
+        // Drop and place tiles one by one.
+        // since the tiles are sorted lowest to highest, higher tiles should fall on lower tiles
         foreach (ManaTile tile in piece.tiles)
         {
+            Debug.Log(tile.pos);
+
             var pos = piece.PieceToBoard(tile.pos);
-
+            tile.SetPosition(pos);
             tile.transform.SetParent(manaTileGridTransform);
-            tile.transform.localPosition = new Vector3(pos.x+0.5f, pos.y+0.5f);
 
-            tiles[pos.x, pos.y] = tile;
+            TileGravity(tile);
+
+            tile.UpdatePositionOnBoard();
+
+            Debug.Log("fell to " + pos + ": color " + tile.color);
         }
+
         Destroy(piece.gameObject);
 
         SpawnNextPiece();
@@ -90,5 +146,29 @@ public class Board : MonoBehaviour
         piece = pieceObject.GetComponent<Piece>();
         piece.SetPosition(pieceSpawnPos);
         piece.UpdatePositions();
+    }
+
+    public void TileGravity(ManaTile tile)
+    {
+        int y = tile.pos.y;
+
+        while (y > 0)
+        {
+            if (tiles[tile.pos.x, y-1] != null)
+            {
+                break;
+            }
+            y--;
+        }
+
+        tiles[tile.pos.x, tile.pos.y] = null;
+        tiles[tile.pos.x, y] = tile;
+        tile.SetPosition(new Vector2Int(tile.pos.x, y));
+    }
+
+    // return the difference between the two tile's heights (t1 - t2).
+    public static int CompareHeight(ManaTile t1, ManaTile t2)
+    {
+        return t1.pos.y - t2.pos.y;
     }
 }

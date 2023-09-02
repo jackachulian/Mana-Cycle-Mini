@@ -7,6 +7,16 @@ public class ManaTile : MonoBehaviour
     [SerializeField] private Vector2Int _pos;
     public Vector2Int pos { get { return _pos; } }
 
+    public void SetPosition(Vector2Int newPos)
+    {
+        _pos = newPos;
+    }
+
+    public void UpdatePositionOnBoard()
+    {
+        transform.localPosition = new Vector3(pos.x + 0.5f, pos.y + 0.5f);
+    }
+
     // Color of this mana tile
     [SerializeField] private int _color;
     public int color { get { return _color; } }

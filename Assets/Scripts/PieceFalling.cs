@@ -7,7 +7,7 @@ using UnityEngine;
 /// and placing it when it has not moved for a certain period of time.
 /// </summary>
 [RequireComponent(typeof(Board))]
-public class PieceMovement : MonoBehaviour
+public class PieceFalling : MonoBehaviour
 {
     [SerializeField] private float fallDelay = 0.8f;
     [SerializeField] private float quickFallDelay = 0.1f;

@@ -33,6 +33,10 @@ public class PlayerBoardController : MonoBehaviour
 
         float verticalInput = Input.GetAxisRaw("Vertical");
         board.pieceMovement.SetQuickFall(verticalInput < -0.5f);
+
+        if (Input.GetButtonDown("RotateCCW")) board.RotatePieceCCW();
+
+        if (Input.GetButtonDown("RotateCW")) board.RotatePieceCW();
     }
 
     private bool HandleRepeatInput(RepeatMode handleRepeatMode)
