@@ -13,15 +13,16 @@ public class Transitioner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject.transform.root);
     }
 
     // called by other objects to switch scene smoothly
     public void TransitionToScene(string s)
     {
         nextScene = s;
-        animator.SetTrigger("In");
         animator.ResetTrigger("Out");
+        animator.SetTrigger("In");
+        
     }
 
     // called by an event in the transition animation
