@@ -254,6 +254,14 @@ PrefabInstance:
       propertyPath: m_enableAutoSizing
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2219438885573315918, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2219438885573315918, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 1567544351}
     - target: {fileID: 5481841111831595380, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
       propertyPath: m_Name
       value: AboutButton
@@ -1105,6 +1113,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5935641999461636001, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
   m_PrefabInstance: {fileID: 1567544347}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1567544351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2219438885573315918, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
+  m_PrefabInstance: {fileID: 1567544347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a98125502f715b4b83cfb77b434e436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2060534382 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5481841111831595380, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
@@ -1202,7 +1221,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e86d01f6c01d8414d8ce5a3d15a7e8bd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
