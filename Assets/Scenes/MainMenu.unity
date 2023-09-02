@@ -838,6 +838,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 95.382
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 53.671
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00017738
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671501730886709565, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000056267
+      objectReference: {fileID: 0}
     - target: {fileID: 5615705325549356283, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
       propertyPath: m_Name
       value: TransitionerObject
@@ -920,6 +944,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5722956234522076804, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880833024788036896, guid: c761b7abee605b0448c03f3e39e34fc9, type: 3}
+      propertyPath: m_FillAmount
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1070,6 +1098,6 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 5058007090173390552}
   - {fileID: 712984715}
   - {fileID: 1106752460}
-  - {fileID: 5058007090173390552}

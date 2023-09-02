@@ -20,7 +20,8 @@ public class Transitioner : MonoBehaviour
     public void TransitionToScene(string s)
     {
         nextScene = s;
-        animator.SetTrigger("Wipe");
+        animator.SetTrigger("In");
+        animator.ResetTrigger("Out");
     }
 
     // called by an event in the transition animation
@@ -28,7 +29,8 @@ public class Transitioner : MonoBehaviour
     {
         // nextScene set by TransitionToScene function when its called
         Debug.Log("Loaded Scene " + nextScene);
-        animator.ResetTrigger("Wipe");
+        animator.ResetTrigger("In");
+        animator.SetTrigger("Out");
         SceneManager.LoadScene(nextScene);
         
     }
