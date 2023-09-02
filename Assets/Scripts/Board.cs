@@ -95,6 +95,7 @@ public class Board : MonoBehaviour
         if (!valid) valid = MovePiece(0, 1);
 
         if (!valid) piece.RotateCW();
+        else piece.UpdatePositions();
     }
 
     public void RotatePieceCW()
@@ -108,6 +109,7 @@ public class Board : MonoBehaviour
         if (!valid) valid = MovePiece(0, 1);
 
         if (!valid) piece.RotateCCW();
+        else piece.UpdatePositions();
     }
 
     /// <summary>
@@ -115,6 +117,13 @@ public class Board : MonoBehaviour
     /// </summary>
     public void PlacePiece()
     {
+        // Convert from piece space to board space
+        foreach (ManaTile tile in piece.tiles)
+        {
+            tile.SetPosition(piece.PieceToBoard(tile.pos));
+            tile.transform.SetParent(manaTileGridTransform);
+        }
+
         // Sort tiles by height
         Array.Sort(piece.tiles, CompareHeight);
 
@@ -122,21 +131,12 @@ public class Board : MonoBehaviour
         // since the tiles are sorted lowest to highest, higher tiles should fall on lower tiles
         foreach (ManaTile tile in piece.tiles)
         {
-            Debug.Log(tile.pos);
-
-            var pos = piece.PieceToBoard(tile.pos);
-            tile.SetPosition(pos);
-            tile.transform.SetParent(manaTileGridTransform);
-
             TileGravity(tile);
-
             tile.UpdatePositionOnBoard();
-
-            Debug.Log("fell to " + pos + ": color " + tile.color);
         }
 
+        // Destroy piece container and spawn the next one
         Destroy(piece.gameObject);
-
         SpawnNextPiece();
     }
 
