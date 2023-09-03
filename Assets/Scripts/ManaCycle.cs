@@ -35,7 +35,7 @@ public class ManaCycle : MonoBehaviour
         }
 
         // shuffle the whole list
-        sequence.OrderBy(e => Random.value).ToArray();
+        sequence = sequence.OrderBy(e => Random.value).ToArray();
 
         // Ensure no two of the same color are adjacent
         // If the color above or below is the same, choose a new random color

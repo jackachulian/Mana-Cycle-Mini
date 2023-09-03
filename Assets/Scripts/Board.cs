@@ -11,12 +11,15 @@ public class Board : MonoBehaviour
     [SerializeField] private Transform manaTileGridTransform;
 
     // Tile dimensions of this board.
-    private int width = 8;
-    private int height = 20;
+    public int width { get; private set; } = 8;
+    public int height { get; private set; } = 20;
 
     private static Vector2Int pieceSpawnPos = new Vector2Int(3, 15);
 
     public PieceFalling pieceMovement { get; private set; }
+    public Spellcasting spellcasting { get; private set; }
+
+    public ManaCycle cycle { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
     private ManaTile[,] tiles;
@@ -24,16 +27,25 @@ public class Board : MonoBehaviour
     // Piece this board is currently dropping
     private Piece piece;
 
+    
+
     private void Reset()
     {
         pieceMovement = GetComponent<PieceFalling>();
         if (!pieceMovement) pieceMovement = new PieceFalling();
+
+        spellcasting = GetComponent<Spellcasting>();
+        if (!spellcasting) spellcasting = new Spellcasting();
     }
 
     void Awake()
     {
         tiles = new ManaTile[width, height];
+
         pieceMovement = GetComponent<PieceFalling>();
+        spellcasting = GetComponent<Spellcasting>();
+
+        cycle = FindObjectOfType<ManaCycle>();
     }
 
     void Start()
@@ -44,6 +56,26 @@ public class Board : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public ManaTile GetTile(int x, int y)
+    {
+        return tiles[x, y];
+    }
+
+    public int GetTileColor(int x, int y)
+    {
+        ManaTile tile = GetTile(x, y);
+        if (!tile) return -1;
+        return tile.color;
+    }
+
+    public void ClearTile(int x, int y)
+    {
+        ManaTile tile = tiles[x, y];
+        if (!tile) return;
+        tiles[x, y] = null;
+        Destroy(tile.gameObject);
     }
 
     // Returns true if none of the current piece's tiles have the same position as any tile on the board.
@@ -112,6 +144,11 @@ public class Board : MonoBehaviour
         else piece.UpdatePositions();
     }
 
+    public void Spellcast()
+    {
+        spellcasting.Spellcast();
+    }
+
     /// <summary>
     /// Place the piece that is currently falling on this board, destroy the piece container object, and spawn the next piece.
     /// </summary>
@@ -148,6 +185,7 @@ public class Board : MonoBehaviour
         piece.UpdatePositions();
     }
 
+    // Perform gravity for a single tile.
     public void TileGravity(ManaTile tile)
     {
         int y = tile.pos.y;
@@ -164,6 +202,42 @@ public class Board : MonoBehaviour
         tiles[tile.pos.x, tile.pos.y] = null;
         tiles[tile.pos.x, y] = tile;
         tile.SetPosition(new Vector2Int(tile.pos.x, y));
+    }
+
+    // Perform gravity for the entie board.
+    public void AllTileGravity()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            ColumnGravity(x);
+        }
+    }
+
+    // Performgravity for a single column.
+    public void ColumnGravity(int x)
+    {
+        // Keep track of the total gap size, to know where to fill in fallen tiles to.
+        int gapSize = 0;
+
+        for (int y = 0; y < height; y++)
+        {
+            // Starting from the bottom, add to gap size if empty,
+            // or bring down by total gap size if there is a tile here.
+            ManaTile tile = tiles[x, y];
+            if (tile == null)
+            {
+                gapSize++;
+            } else
+            {
+                if (gapSize > 0)
+                {
+                    tiles[x, y - gapSize] = tile;
+                    tiles[x, y] = null;
+                    tile.SetPosition(new Vector2Int(x, y - gapSize));
+                    tile.UpdatePositionOnBoard();
+                }
+            }
+        }
     }
 
     // return the difference between the two tile's heights (t1 - t2).

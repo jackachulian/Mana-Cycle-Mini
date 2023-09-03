@@ -12,12 +12,12 @@ public class PieceFalling : MonoBehaviour
     [SerializeField] private float fallDelay = 0.8f;
     [SerializeField] private float quickFallDelay = 0.1f;
 
-    public Board board { get; private set; }
 
     private float fallTimer;
 
     private bool quickFallInputted;
 
+    public Board board { get; private set; }
     private void Awake()
     {
         board = GetComponent<Board>();
