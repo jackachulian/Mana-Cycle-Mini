@@ -6,7 +6,7 @@ using UnityEngine;
 public class Spellcasting : MonoBehaviour
 {
     // The position in the cycle the player is in.
-    private int cyclePosition;
+    public int cyclePosition { get; private set; }
 
     // All tiles that have been proven by the blob algoritm as either clearable or not clearable.
     // Once all of these are true, the state of all tile's clear/unclearability has been found, and searching may end.
@@ -68,6 +68,15 @@ public class Spellcasting : MonoBehaviour
         }
 
         board.AllTileGravity();
+
+        cyclePosition++;
+        if (cyclePosition > board.cycle.cycleLength)
+        {
+            cyclePosition = 0;
+            // TODO: cycle boost
+        }
+
+        board.RepositionPointer();
     }
 
     /// <summary>

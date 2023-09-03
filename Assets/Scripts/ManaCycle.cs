@@ -9,19 +9,23 @@ public class ManaCycle : MonoBehaviour
 
     [SerializeField] private ManaColor[] manaColors;
 
-    [SerializeField] private int cycleLength = 7;
+    [SerializeField] private int _cycleLength = 7;
+    public int cycleLength {  get { return _cycleLength; } }
 
-    [SerializeField] private int uniqueColorsInCycle = 5;
+
+    [SerializeField] private int _uniqueColorsInCycle = 5;
+    public int uniqueColorsInCycle { get { return _uniqueColorsInCycle; } }
 
 
-    [SerializeField] private Transform cycleColorTransform;
+    [SerializeField] private RectTransform cycleColorTransform;
 
     [SerializeField] private CycleColor cycleColorPrefab;
 
+    public CycleColor[] cycleColorObjects { get; private set; }
 
     public void InitializeCycle()
     {
-        sequence = new int[cycleLength];
+        sequence = new int[_cycleLength];
 
         // Get at least 1 of each color
         for (int i = 0; i < uniqueColorsInCycle; i++)
@@ -29,7 +33,7 @@ public class ManaCycle : MonoBehaviour
             sequence[i] = i;
         }
         // Fill the remaining space with random colors
-        for (int i = uniqueColorsInCycle; i < cycleLength; i++)
+        for (int i = uniqueColorsInCycle; i < sequence.Length; i++)
         {
             sequence[i] = Random.Range(0, uniqueColorsInCycle);
         }
@@ -52,11 +56,16 @@ public class ManaCycle : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        cycleColorObjects = new CycleColor[_cycleLength];
         for (int i = 0; i < sequence.Length; i++)
         {
-            CycleColor cycleColor = Instantiate(cycleColorPrefab, cycleColorTransform);
-            cycleColor.SetManaColor(this, sequence[i]);
+            cycleColorObjects[i] = Instantiate(cycleColorPrefab, cycleColorTransform);
+            cycleColorObjects[i].SetManaColor(this, sequence[i]);
         }
+
+        // Immediately refresh the layout, so that pointer placements later this frame are correct
+        // LayoutRebuilder.ForceRebuildLayoutImmediate(cycleColorTransform);
     }
 
     public ManaColor GetManaColor(int index)

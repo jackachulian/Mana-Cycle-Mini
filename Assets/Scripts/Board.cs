@@ -6,7 +6,11 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    [SerializeField] private GameObject piecePrefab;
+    [SerializeField] private GameObject pointerPrefab;
+
+    private GameObject pointer;
+
+    [SerializeField] private Vector3 pointerOffset = new Vector3(-2.25f, 0, 0);
 
     [SerializeField] private Transform manaTileGridTransform;
 
@@ -19,6 +23,8 @@ public class Board : MonoBehaviour
     public PieceFalling pieceMovement { get; private set; }
     public Spellcasting spellcasting { get; private set; }
 
+    public PieceQueue pieceQueue { get; private set; }
+
     public ManaCycle cycle { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
@@ -27,35 +33,36 @@ public class Board : MonoBehaviour
     // Piece this board is currently dropping
     private Piece piece;
 
-    
-
-    private void Reset()
-    {
-        pieceMovement = GetComponent<PieceFalling>();
-        if (!pieceMovement) pieceMovement = new PieceFalling();
-
-        spellcasting = GetComponent<Spellcasting>();
-        if (!spellcasting) spellcasting = new Spellcasting();
-    }
-
     void Awake()
     {
         tiles = new ManaTile[width, height];
 
         pieceMovement = GetComponent<PieceFalling>();
         spellcasting = GetComponent<Spellcasting>();
+        pieceQueue = GetComponent<PieceQueue>();
 
         cycle = FindObjectOfType<ManaCycle>();
     }
 
-    void Start()
+    public void InitializeAfterCycle()
     {
+        pointer = Instantiate(pointerPrefab, transform);
+        StartCoroutine(RepositionPointerNextFrame());
+
+        pieceQueue.InitializeAfterCycle();
         SpawnNextPiece();
     }
 
-    void Update()
+    IEnumerator RepositionPointerNextFrame()
     {
+        yield return new WaitForEndOfFrame();
+        RepositionPointer();
+    }
 
+    public void RepositionPointer()
+    {
+        Transform cycleColorTransform = cycle.cycleColorObjects[spellcasting.cyclePosition].transform;
+        pointer.transform.position = cycleColorTransform.position + pointerOffset;
     }
 
     public ManaTile GetTile(int x, int y)
@@ -179,8 +186,9 @@ public class Board : MonoBehaviour
 
     public void SpawnNextPiece()
     {
-        GameObject pieceObject = Instantiate(piecePrefab, manaTileGridTransform);
-        piece = pieceObject.GetComponent<Piece>();
+        piece = pieceQueue.GetNextPiece();
+        piece.transform.SetParent(manaTileGridTransform, false);
+        piece.transform.localPosition = new Vector3(0.5f, 0.5f, 0);
         piece.SetPosition(pieceSpawnPos);
         piece.UpdatePositions();
     }
