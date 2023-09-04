@@ -18,6 +18,21 @@ public class Spellcasting : MonoBehaviour
 
     public readonly int minimumBlobSize = 3;
 
+    // If a spellcast is currently happening. Only one spellcast can happen at once.
+    public bool spellcasting { get; private set; } = false;
+
+    // Timer before checking for cascade.
+    private float spellcastTimer;
+
+    // True if timer will check for cascade after finishing;
+    // false if cascade already checked and no casdade and will now check for next color.
+    private bool checkingCascade;
+
+    // Delay between color clear and checking for cascade of the same color.
+    private readonly float cascadeDelay = 0.5f;
+    // Delay AFTER checking cascade before checking the next color in the cycle for a combo.
+    private readonly float nextColorDelay = 0.75f;
+
     public Board board { get; private set; }
     private void Awake()
     {
@@ -26,7 +41,48 @@ public class Spellcasting : MonoBehaviour
         checkedManaTiles = new bool[board.width, board.height];
         clearableManaTiles = new bool[board.width, board.height];
     }
-    
+
+    private void Update()
+    {
+        if (spellcasting)
+        {
+            spellcastTimer += Time.deltaTime;
+            float delay = checkingCascade ? cascadeDelay : nextColorDelay;
+            if (spellcastTimer >= delay)
+            {
+                spellcastTimer = 0;
+
+                bool clearedAnyTiles = ClearCurrentColor();
+                if (clearedAnyTiles)
+                {
+                    // If any tiles were cleared, check current color to see if a cascade occured
+                    CheckConnectedTiles(CurrentManaColor());
+                    if (clearableCount > 0)
+                    {
+                        // If yes, next timer tick will check and clear current color
+                        checkingCascade = true;
+                    } else
+                    {
+                        // If not, advance to the next color to check in the next timer tick
+                        AdvanceCycle();
+                    }
+                } else 
+                {
+                    if (checkingCascade)
+                    {
+                        // If the current color cannot be cascaded off, advance to next color to check next
+                        AdvanceCycle();
+                        checkingCascade = false;
+                    } else
+                    {
+                        // If not cascading and next color in combo cannot be cleared, the spellcast ends
+                        spellcasting = false;
+                    }
+                }
+            }
+        }
+    }
+
     // The currnet mana color the player must clear.
     private int CurrentManaColor()
     {
@@ -34,13 +90,12 @@ public class Spellcasting : MonoBehaviour
     }
 
     // Build a list of all discovered blobs of the current color.
-    private void CheckConnectedTiles()
+    private void CheckConnectedTiles(int clearColor)
     {
         System.Array.Clear(checkedManaTiles, 0, checkedManaTiles.Length);
         System.Array.Clear(clearableManaTiles, 0, clearableManaTiles.Length);
-        clearableCount = 0;
 
-        int clearColor = CurrentManaColor();
+        clearableCount = 0;
 
         // Check all tiles for connection
         for (int x = 0; x < board.width; x++)
@@ -54,10 +109,35 @@ public class Spellcasting : MonoBehaviour
 
     public void Spellcast()
     {
-        CheckConnectedTiles();
+        // don't start a spellcast if already spellcasting
+        if (spellcasting) return;
 
+        // if no connected of current color, don't start a spellcast
+        CheckConnectedTiles(CurrentManaColor());
         if (clearableCount == 0) return;
 
+        spellcasting = true;
+        checkingCascade = false;
+        spellcastTimer = 0;
+    }
+
+    // Clear all tiles of the given color.
+    // Return true if any tiles were cleared
+    private bool ClearColor(int color)
+    {
+        CheckConnectedTiles(color);
+        if (clearableCount == 0) return false;
+        ClearConnected();
+        return true;
+    }
+
+    private bool ClearCurrentColor()
+    {
+        return ClearColor(CurrentManaColor());
+    }
+
+    private void ClearConnected()
+    {
         // Clear all connected tiles
         for (int x = 0; x < board.width; x++)
         {
@@ -68,12 +148,15 @@ public class Spellcasting : MonoBehaviour
         }
 
         board.AllTileGravity();
+    }
 
+    private void AdvanceCycle()
+    {
         cyclePosition++;
         if (cyclePosition >= board.cycle.cycleLength)
         {
             cyclePosition = 0;
-            // TODO: cycle boost
+            // TODO: cycle boost if there's enough time to implement
         }
 
         board.RepositionPointer();
