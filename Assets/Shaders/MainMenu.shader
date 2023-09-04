@@ -52,13 +52,15 @@ Shader "Unlit/MainMenu"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // i.uv.x - (x offset) - (sine wave / shape function) * (intensity of color) 
-                float r = 0.0;
-                float g = 0.0;
-                float b = 0.0;
-                float4 col = float4(r,g,b, 0.0);
+                float t = _Time * 10.0;
+                float r = nsin(t + 0.0);
+                float g = nsin(t + 3.14/2);
+                float b = nsin(t + 3.14);
+                float4 col = float4(r,g,b,0.0);
 
-                // col *= 
+                // i.uv.x - (x offset) - (shaping function) * (intensity of color) 
+                col *= (smoothstep(0.0, 0.001, i.uv.x - (0.7 + cos(_Time * 1.0) / 50.0) - (nsin(i.uv.y * 15.0 + _Time * 80.0 + 0.9) * 0.08 - i.uv.y * 0.08))) * (1.0);
+
                 return col;
             }
             ENDCG
