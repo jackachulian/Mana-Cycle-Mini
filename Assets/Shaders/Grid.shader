@@ -37,15 +37,14 @@ Shader "Unlit/Grid"
 
             float distFromGrid(float2 pos)
             {
-                float dist;
+                float dist = 0.0;
 
                 for (float i = 0.0; i < 1.0; i += 0.1)
                 {
-                    // loop for x and y cord in pos
-                    for (int j = 0; j < 2; j++)
-                    {
-                        dist += 1.0 - smoothstep(0.0, 0.004, abs(pos[j] - i));
-                    }
+                    // vert lines
+                    dist += 1.0 - smoothstep(0.0, 0.004, abs(pos[0] + pos.y*(i-0.5) - i) );
+                    // horz lines
+                    dist += 1.0 - smoothstep(0.0, 0.004, fmod(abs(pos[1] - i + _Time),1.0));
                 }
 
                 return dist; 
