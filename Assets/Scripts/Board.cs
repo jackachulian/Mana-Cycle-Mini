@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,7 +13,7 @@ public class Board : MonoBehaviour
 
     [SerializeField] private Vector3 pointerOffset = new Vector3(-2.25f, 0, 0);
 
-    [SerializeField] private Transform manaTileGridTransform;
+    [SerializeField] private Transform manaTileGridTransform; [SerializeField] private TMP_Text scoreText;
 
     // Tile dimensions of this board.
     public int width { get; private set; } = 8;
@@ -25,6 +26,8 @@ public class Board : MonoBehaviour
 
     public PieceQueue pieceQueue { get; private set; }
 
+    public BoardUI ui { get; private set; }
+
     public ManaCycle cycle { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
@@ -33,6 +36,9 @@ public class Board : MonoBehaviour
     // Piece this board is currently dropping
     private Piece piece;
 
+    // Amount of points currently earned. May be used for HP in pvp mode once implemented
+    private int score;
+
     void Awake()
     {
         tiles = new ManaTile[width, height];
@@ -40,8 +46,15 @@ public class Board : MonoBehaviour
         pieceMovement = GetComponent<PieceFalling>();
         spellcasting = GetComponent<Spellcasting>();
         pieceQueue = GetComponent<PieceQueue>();
+        ui = GetComponent<BoardUI>();
 
         cycle = FindObjectOfType<ManaCycle>();
+    }
+
+    private void Start()
+    {
+        // UI initialization
+        ui.SetScore(score);
     }
 
     public void InitializeAfterCycle()
@@ -83,6 +96,14 @@ public class Board : MonoBehaviour
         if (!tile) return;
         tiles[x, y] = null;
         Destroy(tile.gameObject);
+    }
+
+    // Add the amount of points earned to total.
+    // In PVP matches once implemented, this will deal damage instead of adding to points.
+    public void ScorePoints(int points)
+    {
+        score += points;
+        ui.SetScore(score);
     }
 
     // Returns true if none of the current piece's tiles have the same position as any tile on the board.

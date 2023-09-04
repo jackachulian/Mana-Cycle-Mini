@@ -33,6 +33,9 @@ public class Spellcasting : MonoBehaviour
     // Delay AFTER checking cascade before checking the next color in the cycle for a combo.
     private readonly float nextColorDelay = 0.75f;
 
+    private int chain = 1;
+    private int cascade = 1;
+
     public Board board { get; private set; }
     private void Awake()
     {
@@ -52,31 +55,42 @@ public class Spellcasting : MonoBehaviour
             {
                 spellcastTimer = 0;
 
-                bool clearedAnyTiles = ClearCurrentColor();
-                if (clearedAnyTiles)
+                int tilesCleared = ClearCurrentColor();
+                if (tilesCleared > 0)
                 {
-                    // If any tiles were cleared, check current color to see if a cascade occured
+                    // Add points based on this formula
+                    float points = tilesCleared * 10f * (0.5f + 0.5f*chain) * Mathf.Pow(2, cascade-1);
+                    board.ScorePoints((int)points);
+
+                    // If any tiles were cleared, check current color again to see if a cascade occured
                     CheckConnectedTiles(CurrentManaColor());
                     if (clearableCount > 0)
                     {
                         // If yes, next timer tick will check and clear current color
+                        cascade++;
                         checkingCascade = true;
                     } else
                     {
                         // If not, advance to the next color to check in the next timer tick
+                        cascade = 1;
+                        chain++;
                         AdvanceCycle();
                     }
                 } else 
                 {
                     if (checkingCascade)
                     {
+                        cascade = 1;
                         // If the current color cannot be cascaded off, advance to next color to check next
+                        chain++;
                         AdvanceCycle();
                         checkingCascade = false;
                     } else
                     {
                         // If not cascading and next color in combo cannot be cleared, the spellcast ends
                         spellcasting = false;
+                        chain = 1;
+                        cascade = 1;
                     }
                 }
             }
@@ -122,16 +136,16 @@ public class Spellcasting : MonoBehaviour
     }
 
     // Clear all tiles of the given color.
-    // Return true if any tiles were cleared
-    private bool ClearColor(int color)
+    // Return the amount of tiles cleared.
+    private int ClearColor(int color)
     {
         CheckConnectedTiles(color);
-        if (clearableCount == 0) return false;
+        if (clearableCount == 0) return 0;
         ClearConnected();
-        return true;
+        return clearableCount;
     }
 
-    private bool ClearCurrentColor()
+    private int ClearCurrentColor()
     {
         return ClearColor(CurrentManaColor());
     }
