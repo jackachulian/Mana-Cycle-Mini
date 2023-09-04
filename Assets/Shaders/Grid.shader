@@ -66,8 +66,8 @@ Shader "Unlit/Grid"
                 // fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 // UNITY_APPLY_FOG(i.fogCoord, col);
-                fixed4 col;
-                col = fixed4(distFromGrid(i.uv), 0.0, 0.0, 0.0);
+                float4 col;
+                col = float4(distFromGrid(i.uv), 0.0, 0.0, 0.0);
                 return col;
             }
             ENDCG
