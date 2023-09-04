@@ -8,6 +8,7 @@ Shader "Unlit/MainMenu"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -56,7 +57,7 @@ Shader "Unlit/MainMenu"
                 float r = nsin(t + 0.0);
                 float g = nsin(t + 3.14/2);
                 float b = nsin(t + 3.14);
-                float4 col = float4(r,g,b,0.0);
+                float4 col = float4(r,g,b,1.0);
 
                 // i.uv.x - (x offset) - (shaping function) * (intensity of color) 
                 col *= (smoothstep(0.0, 0.001, i.uv.x - (0.7 + cos(_Time * 1.0) / 50.0) - (nsin(i.uv.y * 15.0 + _Time * 80.0 + 0.9) * 0.08 - i.uv.y * 0.08))) * (1.0);
