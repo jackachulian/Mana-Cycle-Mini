@@ -37,13 +37,19 @@ Shader "Unlit/Grid"
 
             float distFromGrid(float2 pos)
             {
+                // TODO serialize all parameters, simplify math accordingly
                 float dist = 0.0;
 
+                // vert lines
                 for (float i = 0.0; i < 1.0; i += 0.1)
                 {
-                    // vert lines
-                    dist += 1.0 - smoothstep(0.0, 0.004, abs(pos[0] + pos.y*(i-0.5) - i) );
-                    // horz lines
+                    // y = mx + b
+                    dist += 1.0 - smoothstep(0.0, 0.004, abs((pos[0] + 0.5) + pos.y*(i-0.5) - 2 * i));
+                }
+
+                // scrolling horz lines
+                for (float i = 0.0; i < 1.0; i += 0.1)
+                {
                     dist += 1.0 - smoothstep(0.0, 0.004, fmod(abs(pos[1] - i + _Time),1.0));
                 }
 
@@ -65,8 +71,8 @@ Shader "Unlit/Grid"
                 // fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 // UNITY_APPLY_FOG(i.fogCoord, col);
-                float4 col;
-                col = float4(distFromGrid(i.uv), 0.0, 0.0, 0.0);
+                float d = distFromGrid(i.uv);
+                float4 col = float4(d, d * (sin(i.uv.y) - 0.5), d, 0.0);
                 return col;
             }
             ENDCG
