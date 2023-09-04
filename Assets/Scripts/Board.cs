@@ -188,7 +188,7 @@ public class Board : MonoBehaviour
     {
         piece = pieceQueue.GetNextPiece();
         piece.transform.SetParent(manaTileGridTransform, false);
-        piece.transform.localPosition = new Vector3(0.5f, 0.5f, 0);
+        piece.transform.localPosition = new Vector3(0.5f, 0.5f, -0.5f);
         piece.SetPosition(pieceSpawnPos);
         piece.UpdatePositions();
     }

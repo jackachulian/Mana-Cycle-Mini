@@ -1611,10 +1611,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaColors:
   - color: {r: 0.9622642, g: 0.2215023, b: 0.2215023, a: 1}
-  - color: {r: 0.9120333, g: 0.9607843, b: 0.21960783, a: 1}
+    darkColor: {r: 0.5943396, g: 0.080740444, b: 0.124938115, a: 1}
+    shapeIcon: {fileID: 7482667652216324306, guid: ff97c1b59aad2ab4099e9bd55b36b252, type: 3}
+    iconPosition: {x: 0, y: 0}
+    iconRotation: 0
+    iconScale: {x: 0.5, y: 0.5}
+  - color: {r: 0.9622642, g: 0.9210904, b: 0.1670345, a: 1}
+    darkColor: {r: 0.7924528, g: 0.6608939, b: 0.10017798, a: 1}
+    shapeIcon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+    iconPosition: {x: 0, y: -0.025}
+    iconRotation: 0
+    iconScale: {x: 0.6, y: 0.6}
   - color: {r: 0.19935915, g: 0.9433962, b: 0.29112345, a: 1}
+    darkColor: {r: 0.07443927, g: 0.4811321, b: 0.16505441, a: 1}
+    shapeIcon: {fileID: 7482667652216324306, guid: ff97c1b59aad2ab4099e9bd55b36b252, type: 3}
+    iconPosition: {x: 0, y: 0}
+    iconRotation: 45
+    iconScale: {x: 0.5, y: 0.5}
   - color: {r: 0.19784617, g: 0.43695197, b: 0.8962264, a: 1}
+    darkColor: {r: 0.14387679, g: 0.25695324, b: 0.5566038, a: 1}
+    shapeIcon: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+    iconPosition: {x: 0, y: 0}
+    iconRotation: 0
+    iconScale: {x: 0.6, y: 0.6}
   - color: {r: 0.7930865, g: 0.13568883, b: 0.9339623, a: 1}
+    darkColor: {r: 0.41902852, g: 0.10196076, b: 0.54901963, a: 1}
+    shapeIcon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+    iconPosition: {x: 0, y: 0.025}
+    iconRotation: 180
+    iconScale: {x: 0.6, y: 0.6}
   _cycleLength: 7
   _uniqueColorsInCycle: 5
   cycleColorTransform: {fileID: 469406012}

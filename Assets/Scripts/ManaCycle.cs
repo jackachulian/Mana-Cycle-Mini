@@ -19,9 +19,9 @@ public class ManaCycle : MonoBehaviour
 
     [SerializeField] private RectTransform cycleColorTransform;
 
-    [SerializeField] private CycleColor cycleColorPrefab;
+    [SerializeField] private ManaTile cycleColorPrefab; // just a mana tile itself, for now
 
-    public CycleColor[] cycleColorObjects { get; private set; }
+    public ManaTile[] cycleColorObjects { get; private set; }
 
     public void InitializeCycle()
     {
@@ -57,11 +57,12 @@ public class ManaCycle : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        cycleColorObjects = new CycleColor[_cycleLength];
+        cycleColorObjects = new ManaTile[_cycleLength];
         for (int i = 0; i < sequence.Length; i++)
         {
+            int color = sequence[i];
             cycleColorObjects[i] = Instantiate(cycleColorPrefab, cycleColorTransform);
-            cycleColorObjects[i].SetManaColor(this, sequence[i]);
+            cycleColorObjects[i].SetColor(color, manaColors[color]);
         }
 
         // Immediately refresh the layout, so that pointer placements later this frame are correct
@@ -78,4 +79,14 @@ public class ManaCycle : MonoBehaviour
 public class ManaColor
 {
     public Color color;
+
+    public Color darkColor;
+
+    public Sprite shapeIcon;
+
+    public Vector2 iconPosition;
+
+    public float iconRotation; // on z axis
+
+    public Vector2 iconScale;
 }

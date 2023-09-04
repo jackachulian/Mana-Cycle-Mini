@@ -7,7 +7,11 @@ public class ManaTile : MonoBehaviour
     [SerializeField] private Vector2Int _pos;
     public Vector2Int pos { get { return _pos; } }
 
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer sprite;
+
+    [SerializeField] private SpriteRenderer borderSprite;
+
+    [SerializeField] private SpriteRenderer iconSprite;
 
     public void SetPosition(Vector2Int newPos)
     {
@@ -26,6 +30,12 @@ public class ManaTile : MonoBehaviour
     public void SetColor(int c, ManaColor manaColor)
     {
         _color = c;
-        spriteRenderer.color = manaColor.color;
+        sprite.color = manaColor.color;
+        borderSprite.color = manaColor.darkColor;
+        iconSprite.sprite = manaColor.shapeIcon;
+        iconSprite.color = manaColor.darkColor;
+        iconSprite.transform.localPosition = (Vector3)manaColor.iconPosition - Vector3.forward*0.1f;
+        iconSprite.transform.localEulerAngles = new Vector3(0, 0, manaColor.iconRotation);
+        iconSprite.transform.localScale = manaColor.iconScale;
     }
 }
