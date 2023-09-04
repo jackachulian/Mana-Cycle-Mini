@@ -70,7 +70,7 @@ public class Spellcasting : MonoBehaviour
         board.AllTileGravity();
 
         cyclePosition++;
-        if (cyclePosition > board.cycle.cycleLength)
+        if (cyclePosition >= board.cycle.cycleLength)
         {
             cyclePosition = 0;
             // TODO: cycle boost
