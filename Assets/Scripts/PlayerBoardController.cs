@@ -19,6 +19,8 @@ public class PlayerBoardController : MonoBehaviour
 
     private void Update()
     {
+        if (!board.active) return;
+
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         if (horizontalInput < -0.5f)
         {
