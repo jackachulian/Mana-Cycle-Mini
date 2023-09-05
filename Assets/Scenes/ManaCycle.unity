@@ -946,6 +946,7 @@ MonoBehaviour:
   resumeButton: {fileID: 6226294887238901972}
   postGameAnimator: {fileID: 4431668158768872320}
   retryButton: {fileID: 1834661908}
+  postgameBGM: {fileID: 8300000, guid: 8883bbd9c5a51b648a52354e2788b3e3, type: 3}
 --- !u!114 &485083514
 MonoBehaviour:
   m_ObjectHideFlags: 0

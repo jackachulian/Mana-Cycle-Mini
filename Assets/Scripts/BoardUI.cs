@@ -15,6 +15,8 @@ public class BoardUI : MonoBehaviour
     [SerializeField] private Animator postGameAnimator;
     [SerializeField] private GameObject retryButton;
 
+    [SerializeField] private AudioClip postgameBGM;
+
     private Board board;
     private void Awake()
     {
@@ -36,9 +38,13 @@ public class BoardUI : MonoBehaviour
     IEnumerator PostgameAfterDelay()
     {
         yield return new WaitForSeconds(0.75f);
+
+        // after the jam, probably should make postgame its own class, so that one or more boards cna share its fuctionality
+        // same for pausing
         postGameAnimator.ResetTrigger("Close");
         postGameAnimator.SetTrigger("Open");
         EventSystem.current.SetSelectedGameObject(retryButton);
+        SoundManager.Instance.SetBGM(postgameBGM);
     }
 
     public void TogglePause()

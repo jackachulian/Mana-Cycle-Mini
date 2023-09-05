@@ -316,6 +316,7 @@ public class Board : MonoBehaviour
     public void TogglePause()
     {
         paused = !paused;
+        active = !paused;
         Time.timeScale = paused ? 0 : 1;
         ui.TogglePause();
     }

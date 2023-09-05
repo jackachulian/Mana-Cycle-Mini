@@ -16,6 +16,8 @@ public class Cutscene : MonoBehaviour
 
     [SerializeField] private Transitioner transitioner;
 
+    [SerializeField] private AudioClip cutsceneBGM;
+
     int lineIndex = -1;
 
     bool fadingIn;
@@ -31,6 +33,7 @@ public class Cutscene : MonoBehaviour
     {
         NextLine();
         fadingIn = true;
+        SoundManager.Instance.SetBGM(cutsceneBGM);
     }
 
     // Update is called once per frame
