@@ -49,6 +49,8 @@ public class Spellcasting : MonoBehaviour
 
     private void Update()
     {
+        if (!board.active) spellcasting = false;
+
         if (spellcasting)
         {
             spellcastTimer += Time.deltaTime;

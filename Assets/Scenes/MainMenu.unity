@@ -5478,7 +5478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7286552472903134912, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7286552472903134912, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -5502,7 +5502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7286552472903134912, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TransitionToScene
+      value: PlayPressed
       objectReference: {fileID: 0}
     - target: {fileID: 7286552472903134912, guid: ecca0dc9342bee948bdff7605a48d43e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
