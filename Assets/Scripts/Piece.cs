@@ -62,7 +62,7 @@ public class Piece : MonoBehaviour
         foreach (ManaTile tile in _tiles)
         {
             var pos = PieceToBoard(tile.pos);
-            tile.transform.localPosition = new Vector3(pos.x, pos.y);
+            if (tile != null) tile.transform.localPosition = new Vector3(pos.x, pos.y);
         }
     }
 
