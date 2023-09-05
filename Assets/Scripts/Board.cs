@@ -227,7 +227,8 @@ public class Board : MonoBehaviour
         piece = pieceQueue.GetNextPiece();
         piece.transform.SetParent(manaTileGridTransform, false);
         piece.transform.localPosition = new Vector3(0.5f, 0.5f, -0.5f);
-        
+        piece.SetPosition(pieceSpawnPos);
+
         // If the new piece is blocked by any tiles on the board,
         // player has topped out
         if (!IsValidPlacement())
@@ -237,7 +238,6 @@ public class Board : MonoBehaviour
             return;
         }
 
-        piece.SetPosition(pieceSpawnPos);
         piece.UpdatePositions();
     }
 
@@ -305,6 +305,7 @@ public class Board : MonoBehaviour
     public void Die()
     {
         active = false;
+        SoundManager.Instance.PlaySound(SoundManager.sfx.lose);
         ui.OnDeath();
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 public class BoardFallAnim : MonoBehaviour
 {
 
-    private float initialVelocity = 1f;
+    [SerializeField] private float initialVelocity = 2f;
 
-    private float fallAccel = -5f;
+    [SerializeField] private float fallAccel = -8f;
 
-    private float fallAngularVel = 15f;
+    [SerializeField] private float fallAngularVel = 12f;
 
 
     private float angle = 0;
