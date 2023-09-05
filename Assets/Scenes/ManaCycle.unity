@@ -835,6 +835,7 @@ GameObject:
   - component: {fileID: 485083511}
   - component: {fileID: 485083512}
   - component: {fileID: 485083513}
+  - component: {fileID: 485083514}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -949,7 +950,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91683259180dfeb4eb84ea20a2f248f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardFall: {fileID: 485083514}
   scoreText: {fileID: 1447913920}
+--- !u!114 &485083514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485083506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdfdca596bbd6fb47ae2b96f987af479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialVelocity: 2
+  fallAccel: -12
+  fallAngularVel: -4
 --- !u!1 &496770148
 GameObject:
   m_ObjectHideFlags: 0
