@@ -233,7 +233,6 @@ public class Board : MonoBehaviour
         // player has topped out
         if (!IsValidPlacement())
         {
-            Destroy(piece.gameObject);
             Die();
             return;
         }
@@ -305,6 +304,8 @@ public class Board : MonoBehaviour
     public void Die()
     {
         active = false;
+        Destroy(piece.gameObject);
+        SoundManager.Instance.StopBGM();
         SoundManager.Instance.PlaySound(SoundManager.sfx.lose);
         ui.OnDeath();
     }
