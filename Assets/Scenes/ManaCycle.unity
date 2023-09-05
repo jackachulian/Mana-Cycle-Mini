@@ -826,6 +826,7 @@ GameObject:
   - component: {fileID: 485083512}
   - component: {fileID: 485083513}
   - component: {fileID: 485083514}
+  - component: {fileID: 485083515}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -897,7 +898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointerPrefab: {fileID: 180459187991057290, guid: ee532860ca9949a4f90c3382ca3ce47d, type: 3}
   pointerOffset: {x: -2.25, y: 0, z: 0}
-  manaTileGridTransform: {fileID: 1050175739}
+  _manaTileGridTransform: {fileID: 1050175739}
   scoreText: {fileID: 1447913920}
 --- !u!114 &485083511
 MonoBehaviour:
@@ -962,6 +963,19 @@ MonoBehaviour:
   initialVelocity: 2
   fallAccel: -12
   fallAngularVel: -4
+--- !u!114 &485083515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485083506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f359f6f6624814386512ea7c2f680f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghostTilePrefab: {fileID: 803380494854558177, guid: 5cd19f405701e2b448155a424ed193f2, type: 3}
 --- !u!1 &496770148
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,10 @@ public class Board : MonoBehaviour
 
     [SerializeField] private Vector3 pointerOffset = new Vector3(-2.25f, 0, 0);
 
-    [SerializeField] private Transform manaTileGridTransform; [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private Transform _manaTileGridTransform; 
+    public Transform manaTileGridTransform { get { return _manaTileGridTransform; } }
+    
+    [SerializeField] private TMP_Text scoreText;
 
     // Tile dimensions of this board.
     public int width { get; private set; } = 8;
@@ -29,13 +32,16 @@ public class Board : MonoBehaviour
 
     public BoardUI ui { get; private set; }
 
+    public GhostPiece ghostPiece { get; private set; }
+
+
     public ManaCycle cycle { get; private set; }
 
     // The grid of tiles on this board. Coordinates represent [X, Y] position on the board.
-    private ManaTile[,] tiles;
+    public ManaTile[,] tiles { get; private set; }
 
     // Piece this board is currently dropping
-    private Piece piece;
+    public Piece piece { get; private set; }
 
     // Amount of points currently earned. May be used for HP in pvp mode once implemented
     private int score;
@@ -54,6 +60,7 @@ public class Board : MonoBehaviour
         spellcasting = GetComponent<Spellcasting>();
         pieceQueue = GetComponent<PieceQueue>();
         ui = GetComponent<BoardUI>();
+        ghostPiece = GetComponent<GhostPiece>();
 
         cycle = FindObjectOfType<ManaCycle>();
     }
@@ -146,7 +153,11 @@ public class Board : MonoBehaviour
         }
 
         piece.UpdatePositions();
-        if (offset.y == 0) SoundManager.Instance.PlaySound(SoundManager.sfx.move);
+        if (offset.x != 0)
+        {
+            SoundManager.Instance.PlaySound(SoundManager.sfx.move);
+            ghostPiece.RecalculateGhostPiece();
+        }
         return true;
     }
     
@@ -170,6 +181,7 @@ public class Board : MonoBehaviour
         {
             piece.UpdatePositions();
             SoundManager.Instance.PlaySound(SoundManager.sfx.rotate);
+            ghostPiece.RecalculateGhostPiece();
         }
     }
 
@@ -188,6 +200,7 @@ public class Board : MonoBehaviour
         {
             piece.UpdatePositions();
             SoundManager.Instance.PlaySound(SoundManager.sfx.rotate);
+            ghostPiece.RecalculateGhostPiece();
         }
     }
 
@@ -205,7 +218,7 @@ public class Board : MonoBehaviour
         foreach (ManaTile tile in piece.tiles)
         {
             tile.SetPosition(piece.PieceToBoard(tile.pos));
-            tile.transform.SetParent(manaTileGridTransform);
+            tile.transform.SetParent(_manaTileGridTransform);
         }
 
         // Sort tiles by height
@@ -228,7 +241,7 @@ public class Board : MonoBehaviour
     public void SpawnNextPiece()
     {
         piece = pieceQueue.GetNextPiece();
-        piece.transform.SetParent(manaTileGridTransform, false);
+        piece.transform.SetParent(_manaTileGridTransform, false);
         piece.transform.localPosition = new Vector3(0.5f, 0.5f, -0.5f);
         piece.SetPosition(pieceSpawnPos);
 
@@ -241,6 +254,8 @@ public class Board : MonoBehaviour
         }
 
         piece.UpdatePositions();
+
+        ghostPiece.RecalculateGhostPiece();
     }
 
     // Perform gravity for a single tile.

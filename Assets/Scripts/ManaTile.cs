@@ -7,11 +7,11 @@ public class ManaTile : MonoBehaviour
     [SerializeField] private Vector2Int _pos;
     public Vector2Int pos { get { return _pos; } }
 
-    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] protected SpriteRenderer sprite;
 
-    [SerializeField] private SpriteRenderer borderSprite;
+    [SerializeField] protected SpriteRenderer borderSprite;
 
-    [SerializeField] private SpriteRenderer iconSprite;
+    [SerializeField] protected SpriteRenderer iconSprite;
 
     public void SetPosition(Vector2Int newPos)
     {
@@ -24,10 +24,10 @@ public class ManaTile : MonoBehaviour
     }
 
     // Color of this mana tile
-    [SerializeField] private int _color;
+    [SerializeField] protected int _color;
     public int color { get { return _color; } }
 
-    public void SetColor(int c, ManaColor manaColor)
+    public virtual void SetColor(int c, ManaColor manaColor)
     {
         _color = c;
         sprite.color = manaColor.color;
