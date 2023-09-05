@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     [SerializeField] private GameObject pointerPrefab;
 
     private GameObject pointer;
+    private Shake pointerShake;
 
     [SerializeField] private Vector3 pointerOffset = new Vector3(-2.25f, 0, 0);
 
@@ -76,6 +77,7 @@ public class Board : MonoBehaviour
         active = true;
 
         pointer = Instantiate(pointerPrefab, transform);
+        pointerShake = pointer.GetComponent<Shake>();
         StartCoroutine(RepositionPointerNextFrame());
 
         pieceQueue.InitializeAfterCycle();
@@ -93,6 +95,11 @@ public class Board : MonoBehaviour
     {
         Transform cycleColorTransform = cycle.cycleColorObjects[spellcasting.cyclePosition].transform;
         pointer.transform.position = cycleColorTransform.position + pointerOffset;
+    }
+
+    public void ShakePointer()
+    {
+        pointerShake.StartShake();
     }
 
     public ManaTile GetTile(int x, int y)

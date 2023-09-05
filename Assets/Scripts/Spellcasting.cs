@@ -7,6 +7,8 @@ public class Spellcasting : MonoBehaviour
 {
     [SerializeField] private ChainPopup chainPopup, cascadePopup;
 
+    [SerializeField] private AudioClip castFailSound;
+
     // The position in the cycle the player is in.
     public int cyclePosition { get; private set; }
 
@@ -140,7 +142,12 @@ public class Spellcasting : MonoBehaviour
 
         // if no connected of current color, don't start a spellcast
         CheckConnectedTiles(CurrentManaColor());
-        if (clearableCount == 0) return;
+        if (clearableCount == 0)
+        {
+            board.ShakePointer();
+            SoundManager.Instance.PlaySound(castFailSound);
+            return;
+        }
 
         spellcasting = true;
         checkingCascade = false;
