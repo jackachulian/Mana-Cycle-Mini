@@ -1197,8 +1197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   songs:
   - {fileID: 8300000, guid: 2fc29261d5f9872498db6d6c40073e86, type: 3}
-  - {fileID: 8300000, guid: a0e660dbe8ad6eb4c9e916cf75c7d3cc, type: 3}
-  - {fileID: 8300000, guid: 82815a4f33baef94ebf81eae33ca35cb, type: 3}
+  - {fileID: 8300000, guid: cb2b8667b64f38846a5f01d836c83294, type: 3}
+  - {fileID: 8300000, guid: 20d01e1ff7bd06547a558bef26c2a9d0, type: 3}
 --- !u!4 &685915727
 Transform:
   m_ObjectHideFlags: 0
