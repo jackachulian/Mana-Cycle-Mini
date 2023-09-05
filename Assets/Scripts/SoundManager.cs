@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
     public static SoundEffects sfx;
     [SerializeField] private AudioSource musicSource, effectSource;
+    // public float masterVolume;
     
     void Awake()
     {
@@ -79,6 +80,16 @@ public class SoundManager : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         PlaySound(clip, 1f);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        Instance.musicSource.volume = value;
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        Instance.effectSource.volume = value;
     }
 
 }
