@@ -82,6 +82,16 @@ public class SoundManager : MonoBehaviour
         PlaySound(clip, 1f);
     }
 
+    float timeSinceLastTestSound = 0f;
+    public void PlayTestSound(AudioClip clip)
+    {
+        if (Time.time - timeSinceLastTestSound >= 0.2f)
+        {
+            PlaySound(clip, 1f);
+            timeSinceLastTestSound = Time.time;
+        }
+    }
+
     public void SetMusicVolume(float value)
     {
         Instance.musicSource.volume = value;
