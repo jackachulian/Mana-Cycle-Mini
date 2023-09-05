@@ -214,15 +214,15 @@ public class Board : MonoBehaviour
     /// </summary>
     public void PlacePiece()
     {
+        // Sort tiles by height
+        Array.Sort(piece.tiles, CompareHeight);
+
         // Convert from piece space to board space
         foreach (ManaTile tile in piece.tiles)
         {
             tile.SetPosition(piece.PieceToBoard(tile.pos));
             tile.transform.SetParent(_manaTileGridTransform);
         }
-
-        // Sort tiles by height
-        Array.Sort(piece.tiles, CompareHeight);
 
         // Drop and place tiles one by one.
         // since the tiles are sorted lowest to highest, higher tiles should fall on lower tiles
@@ -313,16 +313,17 @@ public class Board : MonoBehaviour
         }
     }
 
-    // return the difference between the two tile's heights (t1 - t2).
-    public static int CompareHeight(ManaTile t1, ManaTile t2)
+    // return the difference between the two tile's heights in the piece (t1 - t2).
+    public int CompareHeight(ManaTile t1, ManaTile t2)
     {
-        return t1.pos.y - t2.pos.y;
+        return piece.PieceToBoard(t1.pos).y - piece.PieceToBoard(t2.pos).y;
     }
 
     public void Die()
     {
         active = false;
         Destroy(piece.gameObject);
+        ghostPiece.DestroyGhostTiles();
         SoundManager.Instance.StopBGM();
         SoundManager.Instance.PlaySound(SoundManager.sfx.lose);
         ui.OnDeath();

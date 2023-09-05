@@ -13,6 +13,10 @@ public class ManaTile : MonoBehaviour
 
     [SerializeField] protected SpriteRenderer iconSprite;
 
+    private ManaColor manaColor;
+
+    private bool lit;
+
     public void SetPosition(Vector2Int newPos)
     {
         _pos = newPos;
@@ -29,6 +33,7 @@ public class ManaTile : MonoBehaviour
 
     public virtual void SetColor(int c, ManaColor manaColor)
     {
+        this.manaColor = manaColor;
         _color = c;
         sprite.color = manaColor.color;
         borderSprite.color = manaColor.darkColor;
@@ -37,5 +42,29 @@ public class ManaTile : MonoBehaviour
         iconSprite.transform.localPosition = (Vector3)manaColor.iconPosition - Vector3.forward*0.1f;
         iconSprite.transform.localEulerAngles = new Vector3(0, 0, manaColor.iconRotation);
         iconSprite.transform.localScale = manaColor.iconScale;
+    }
+
+    public virtual void Update()
+    {
+        if (lit)
+        {
+            if (manaColor == null) return;
+            float lightValue = 0.25f + Mathf.PingPong(Time.time*0.75f, 0.25f);
+            sprite.color = Color.Lerp(manaColor.color, Color.white, lightValue);
+            borderSprite.color = Color.Lerp(manaColor.darkColor, Color.white, lightValue*0.5f);
+            iconSprite.color = Color.Lerp(manaColor.darkColor, Color.white, lightValue * 0.5f);
+        }
+    }
+
+    public void SetLit(bool lit)
+    {
+        if (this.lit && !lit)
+        {
+            sprite.color = manaColor.color;
+            borderSprite.color = manaColor.darkColor;
+            iconSprite.sprite = manaColor.shapeIcon;
+            iconSprite.color = manaColor.darkColor;
+        }
+        this.lit = lit;
     }
 }

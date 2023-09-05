@@ -21,4 +21,9 @@ public class GhostTile : ManaTile
         iconCenterSprite.transform.localEulerAngles = new Vector3(0, 0, manaColor.iconRotation);
         iconCenterSprite.transform.localScale = manaColor.iconScale*0.667f;
     }
+
+    public override void Update()
+    {
+        // nothing; should not be lit up if this is a ghost tile
+    }
 }

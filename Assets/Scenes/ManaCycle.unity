@@ -4282,8 +4282,8 @@ MonoBehaviour:
     iconPosition: {x: 0, y: 0}
     iconRotation: 0
     iconScale: {x: 0.5, y: 0.5}
-  - color: {r: 0.9622642, g: 0.9210904, b: 0.1670345, a: 1}
-    darkColor: {r: 0.7924528, g: 0.6608939, b: 0.10017798, a: 1}
+  - color: {r: 0.9433962, g: 0.8879756, b: 0.10234961, a: 1}
+    darkColor: {r: 0.745283, g: 0.6227233, b: 0.08788714, a: 1}
     shapeIcon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
     iconPosition: {x: 0, y: -0.03}
     iconRotation: 0

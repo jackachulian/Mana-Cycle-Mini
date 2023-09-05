@@ -15,7 +15,7 @@ public class Spellcasting : MonoBehaviour
     bool[,] checkedManaTiles;
 
     // All tiles of the current color that will be cleared in the next spellcast.
-    bool[,] clearableManaTiles;
+    public bool[,] clearableManaTiles { get; private set; }
     int clearableCount;
 
     public readonly int minimumBlobSize = 3;
@@ -114,19 +114,23 @@ public class Spellcasting : MonoBehaviour
     // Build a list of all discovered blobs of the current color.
     private void CheckConnectedTiles(int clearColor)
     {
-        System.Array.Clear(checkedManaTiles, 0, checkedManaTiles.Length);
-        System.Array.Clear(clearableManaTiles, 0, clearableManaTiles.Length);
-
-        clearableCount = 0;
+        ResetCheckArrays();
 
         // Check all tiles for connection
         for (int x = 0; x < board.width; x++)
         {
             for (int y = 0; y < board.height; y++)
             {
-                SearchForConnected(x, y, clearColor, 0);
+                SearchForConnected(x, y, clearColor, 0, board.tiles, false);
             }
         }
+    }
+
+    public void ResetCheckArrays()
+    {
+        System.Array.Clear(checkedManaTiles, 0, checkedManaTiles.Length);
+        System.Array.Clear(clearableManaTiles, 0, clearableManaTiles.Length);
+        clearableCount = 0;
     }
 
     public void Spellcast()
@@ -151,6 +155,7 @@ public class Spellcasting : MonoBehaviour
         CheckConnectedTiles(color);
         if (clearableCount == 0) return 0;
         ClearConnected();
+        board.ghostPiece.RecalculateGhostPiece();
         return clearableCount;
     }
 
@@ -192,8 +197,10 @@ public class Spellcasting : MonoBehaviour
     /// <param name="y">tile y pos</param>
     /// <param name="color">Color to search for</param>
     /// <param name="count">The amount of tiles with this color already connected in the current "blob"</param>
+    /// <param name="tiles">The array of tiles to search</param>
+    /// <param name="light">Whether or not to iluminate all blobs in a big enough blob</param>
     /// <returns></returns>
-    private int SearchForConnected(int x, int y, int color, int count)
+    public int SearchForConnected(int x, int y, int color, int count, ManaTile[,] tiles, bool light)
     {
         // Don't check tile if outside bounds
         if (x < 0 || x >= board.width || y < 0 || y >= board.height) return count;
@@ -204,18 +211,20 @@ public class Spellcasting : MonoBehaviour
         // Mark as checked, so no future checks will try to check this tile.
         checkedManaTiles[x, y] = true;
 
-        // Don't add if incorrect color
-        int tileColor = board.GetTileColor(x, y);
+        // Don't add if no tile or incorrect color
+        var tile = tiles[x, y];
+        if (!tile) return count;
+        int tileColor = tile.color;
         if (color != tileColor) return count;
 
         // Add 1 to total blob size for this tile
         count++;
 
         // Check around all adjacent tiles
-        count = SearchForConnected(x - 1, y, color, count);
-        count = SearchForConnected(x + 1, y, color, count);
-        count = SearchForConnected(x, y - 1, color, count);
-        count = SearchForConnected(x, y + 1, color, count);
+        count = SearchForConnected(x - 1, y, color, count, tiles, light);
+        count = SearchForConnected(x + 1, y, color, count, tiles, light);
+        count = SearchForConnected(x, y - 1, color, count, tiles, light);
+        count = SearchForConnected(x, y + 1, color, count, tiles, light);
 
         // After incrementing count, check if this tile or amount connected exceeds the minimum
         // If so, this should be connected to at least minBlobSize-1 other tiles,
@@ -224,6 +233,7 @@ public class Spellcasting : MonoBehaviour
         {
             clearableManaTiles[x, y] = true;
             clearableCount++;
+            if (light) tile.SetLit(true);
         }
 
         // finally, return count so that previous iterations can know how many tiles were connected
