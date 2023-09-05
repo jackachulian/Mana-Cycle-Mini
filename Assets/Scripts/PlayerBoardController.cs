@@ -41,6 +41,8 @@ public class PlayerBoardController : MonoBehaviour
         if (Input.GetButtonDown("RotateCW")) board.RotatePieceCW();
 
         if (Input.GetButtonDown("Spellcast")) board.Spellcast();
+
+        if (Input.GetButtonDown("Pause")) board.TogglePause();
     }
 
     private bool HandleRepeatInput(RepeatMode handleRepeatMode)

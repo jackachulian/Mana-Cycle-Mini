@@ -1618,7 +1618,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1700307066}
         m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: PlaySound
+        m_MethodName: PlayTestSound
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 8300000, guid: 0ba8576052a91ce4db24f0787ae86af0, type: 3}
@@ -2954,9 +2954,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 1c89d876da073b74e88b9b1d1b15aac2, type: 2}
   m_Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

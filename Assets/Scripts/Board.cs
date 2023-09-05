@@ -43,6 +43,9 @@ public class Board : MonoBehaviour
     // When false, will not spawn a new piece or perform piece falling, used for when game has not started or has ended
     public bool active { get; private set; } = false;
 
+    // When true, player has paused the game, active is false temporarily.
+    public bool paused { get; private set; }
+
     void Awake()
     {
         tiles = new ManaTile[width, height];
@@ -308,5 +311,12 @@ public class Board : MonoBehaviour
         SoundManager.Instance.StopBGM();
         SoundManager.Instance.PlaySound(SoundManager.sfx.lose);
         ui.OnDeath();
+    }
+
+    public void TogglePause()
+    {
+        paused = !paused;
+        Time.timeScale = paused ? 0 : 1;
+        ui.TogglePause();
     }
 }
