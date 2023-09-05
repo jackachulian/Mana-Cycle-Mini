@@ -5,6 +5,8 @@ using UnityEngine;
 // Controls the spellcasting and blob mana clearing on a board.
 public class Spellcasting : MonoBehaviour
 {
+    [SerializeField] private ChainPopup chainPopup, cascadePopup;
+
     // The position in the cycle the player is in.
     public int cyclePosition { get; private set; }
 
@@ -58,6 +60,8 @@ public class Spellcasting : MonoBehaviour
                 int tilesCleared = ClearCurrentColor();
                 if (tilesCleared > 0)
                 {
+                    if (!checkingCascade && chain > 1)  chainPopup.Popup(chain);
+
                     // Add points based on this formula
                     float points = tilesCleared * 10f * (0.5f + 0.5f*chain) * Mathf.Pow(2, cascade-1);
                     board.ScorePoints((int)points);
@@ -68,6 +72,7 @@ public class Spellcasting : MonoBehaviour
                     if (clearableCount > 0)
                     {
                         // If yes, next timer tick will check and clear current color
+                        if (cascade > 1) cascadePopup.Popup(cascade);
                         cascade++;
                         checkingCascade = true;
                     } else
