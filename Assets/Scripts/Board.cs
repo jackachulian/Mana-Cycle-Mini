@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -39,6 +40,9 @@ public class Board : MonoBehaviour
     // Amount of points currently earned. May be used for HP in pvp mode once implemented
     private int score;
 
+    // When false, will not spawn a new piece or perform piece falling, used for when game has not started or has ended
+    public bool active { get; private set; } = false;
+
     void Awake()
     {
         tiles = new ManaTile[width, height];
@@ -59,11 +63,14 @@ public class Board : MonoBehaviour
 
     public void InitializeAfterCycle()
     {
+        active = true;
+
         pointer = Instantiate(pointerPrefab, transform);
         StartCoroutine(RepositionPointerNextFrame());
 
         pieceQueue.InitializeAfterCycle();
         SpawnNextPiece();
+
     }
 
     IEnumerator RepositionPointerNextFrame()
@@ -220,6 +227,16 @@ public class Board : MonoBehaviour
         piece = pieceQueue.GetNextPiece();
         piece.transform.SetParent(manaTileGridTransform, false);
         piece.transform.localPosition = new Vector3(0.5f, 0.5f, -0.5f);
+        
+        // If the new piece is blocked by any tiles on the board,
+        // player has topped out
+        if (!IsValidPlacement())
+        {
+            Destroy(piece.gameObject);
+            Die();
+            return;
+        }
+
         piece.SetPosition(pieceSpawnPos);
         piece.UpdatePositions();
     }
@@ -283,5 +300,11 @@ public class Board : MonoBehaviour
     public static int CompareHeight(ManaTile t1, ManaTile t2)
     {
         return t1.pos.y - t2.pos.y;
+    }
+
+    public void Die()
+    {
+        active = false;
+        ui.OnDeath();
     }
 }

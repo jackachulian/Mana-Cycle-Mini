@@ -32,6 +32,8 @@ public class PieceFalling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!board.active) return;
+
         // Falling
         fallTimer += Time.deltaTime;
         float delay = quickFallInputted ? quickFallDelay : fallDelay;
