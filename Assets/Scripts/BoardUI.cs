@@ -37,7 +37,7 @@ public class BoardUI : MonoBehaviour
 
     IEnumerator PostgameAfterDelay()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1.5f);
 
         // after the jam, probably should make postgame its own class, so that one or more boards cna share its fuctionality
         // same for pausing
