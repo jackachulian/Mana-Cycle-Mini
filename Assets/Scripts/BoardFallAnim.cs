@@ -8,7 +8,7 @@ public class BoardFallAnim : MonoBehaviour
 
     [SerializeField] private float fallAccel = -8f;
 
-    [SerializeField] private float fallAngularVel = 12f;
+    [SerializeField] private float fallAngularVel = -8f;
 
 
     private float angle = 0;
