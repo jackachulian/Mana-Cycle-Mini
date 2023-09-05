@@ -10,12 +10,16 @@ using UnityEngine;
 public class PieceFalling : MonoBehaviour
 {
     [SerializeField] private float fallDelay = 0.8f;
-    [SerializeField] private float quickFallDelay = 0.1f;
-
+    [SerializeField] private float quickFallDelay = 0.125f;
+    [SerializeField] private float slideDelay = 0.65f;
 
     private float fallTimer;
 
+    private float slideTimer;
+
     private bool quickFallInputted;
+
+    private bool sliding;
 
     public Board board { get; private set; }
     private void Awake()
@@ -34,17 +38,39 @@ public class PieceFalling : MonoBehaviour
     {
         if (!board.active) return;
 
+        // this code is a tad bit disgusting, may refactor later
         // Falling
         fallTimer += Time.deltaTime;
         float delay = quickFallInputted ? quickFallDelay : fallDelay;
         if (fallTimer >= delay)
         {
-            bool moved = board.MovePiece(0, -1);
-            if (!moved)
+            if (!sliding)
             {
-                board.PlacePiece();
+                bool moved = board.MovePiece(0, -1);
+                if (moved)
+                {
+                    fallTimer = 0;
+                }
+                else {
+                    sliding = !quickFallInputted;
+                    if (!sliding)
+                    {
+                        board.PlacePiece();
+                        fallTimer = 0;
+                    }
+                }
             }
-            fallTimer = 0;
+
+            if (sliding)
+            {
+                slideTimer += Time.deltaTime;
+                if (quickFallInputted || slideTimer >= slideDelay)
+                {
+                    sliding = false;
+                    slideTimer = 0;
+                    board.PlacePiece();
+                }
+            }
         }
     }
 
