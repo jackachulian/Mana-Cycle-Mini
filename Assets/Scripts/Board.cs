@@ -136,6 +136,7 @@ public class Board : MonoBehaviour
         }
 
         piece.UpdatePositions();
+        if (offset.y == 0) SoundManager.Instance.PlaySound(SoundManager.sfx.move);
         return true;
     }
     
@@ -155,7 +156,11 @@ public class Board : MonoBehaviour
         if (!valid) valid = MovePiece(0, 1);
 
         if (!valid) piece.RotateCW();
-        else piece.UpdatePositions();
+        else
+        {
+            piece.UpdatePositions();
+            SoundManager.Instance.PlaySound(SoundManager.sfx.rotate);
+        }
     }
 
     public void RotatePieceCW()
@@ -169,7 +174,11 @@ public class Board : MonoBehaviour
         if (!valid) valid = MovePiece(0, 1);
 
         if (!valid) piece.RotateCCW();
-        else piece.UpdatePositions();
+        else 
+        {
+            piece.UpdatePositions();
+            SoundManager.Instance.PlaySound(SoundManager.sfx.rotate);
+        }
     }
 
     public void Spellcast()
@@ -202,6 +211,7 @@ public class Board : MonoBehaviour
 
         // Destroy piece container and spawn the next one
         Destroy(piece.gameObject);
+        SoundManager.Instance.PlaySound(SoundManager.sfx.land);
         SpawnNextPiece();
     }
 

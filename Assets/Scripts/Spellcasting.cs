@@ -61,6 +61,7 @@ public class Spellcasting : MonoBehaviour
                     // Add points based on this formula
                     float points = tilesCleared * 10f * (0.5f + 0.5f*chain) * Mathf.Pow(2, cascade-1);
                     board.ScorePoints((int)points);
+                    SoundManager.Instance.PlaySound(SoundManager.sfx.cast, pitch: 1f + 0.122f * chain);
 
                     // If any tiles were cleared, check current color again to see if a cascade occured
                     CheckConnectedTiles(CurrentManaColor());
@@ -133,6 +134,7 @@ public class Spellcasting : MonoBehaviour
         spellcasting = true;
         checkingCascade = false;
         spellcastTimer = 0;
+        SoundManager.Instance.PlaySound(SoundManager.sfx.castStartup);
     }
 
     // Clear all tiles of the given color.
