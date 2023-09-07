@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Mana Skin", menuName = "ManaCycle/Skins")]
 public class ManaSkins : ScriptableObject
 {
+    public string skinName;
     public ManaShape[] shapes;
 }
 

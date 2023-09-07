@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e49e2fb511f8ef4b9ab44f74e0ed52e, type: 3}
-  m_Name: Default
+  m_Name: Elements
   m_EditorClassIdentifier: 
-  skinName: Shapes
+  skinName: Elements
   shapes:
   - color: {r: 0.9607844, g: 0.21960786, b: 0.21960786, a: 1}
     darkColor: {r: 0.59607846, g: 0.08235294, b: 0.1254902, a: 1}
-    shapeIcon: {fileID: 7482667652216324306, guid: ff97c1b59aad2ab4099e9bd55b36b252, type: 3}
+    shapeIcon: {fileID: 21300000, guid: ddcecb897ea81e64e8f0ea517b848c42, type: 3}
     iconPosition: {x: 0, y: 0}
     iconRotation: 0
-    iconScale: {x: 0.5, y: 0.5}
+    iconScale: {x: 0.25, y: 0.25}
   - color: {r: 0.9450981, g: 0.8862746, b: 0.10196079, a: 1}
     darkColor: {r: 0.74509805, g: 0.62352943, b: 0.08627451, a: 1}
-    shapeIcon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+    shapeIcon: {fileID: 21300000, guid: 5596f2f6ea75a014e9dffad3c850dabd, type: 3}
     iconPosition: {x: 0, y: -0.03}
     iconRotation: 0
-    iconScale: {x: 0.65, y: 0.65}
+    iconScale: {x: 0.325, y: 0.325}
   - color: {r: 0.20000002, g: 0.9450981, b: 0.2901961, a: 1}
     darkColor: {r: 0.07450981, g: 0.48235297, b: 0.16470589, a: 1}
-    shapeIcon: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-    iconPosition: {x: 0, y: 0}
-    iconRotation: 45
-    iconScale: {x: 0.5, y: 0.5}
-  - color: {r: 0.19607845, g: 0.43529415, b: 0.8980393, a: 1}
-    darkColor: {r: 0.14509805, g: 0.25882354, b: 0.5568628, a: 1}
-    shapeIcon: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+    shapeIcon: {fileID: 21300000, guid: 0adcfcf5028b9d54fb92cb36e50db209, type: 3}
     iconPosition: {x: 0, y: 0}
     iconRotation: 0
-    iconScale: {x: 0.6, y: 0.6}
+    iconScale: {x: 0.25, y: 0.25}
+  - color: {r: 0.19607845, g: 0.43529415, b: 0.8980393, a: 1}
+    darkColor: {r: 0.14509805, g: 0.25882354, b: 0.5568628, a: 1}
+    shapeIcon: {fileID: 21300000, guid: 77dc963130650a34c8bb711f05a83893, type: 3}
+    iconPosition: {x: 0, y: 0}
+    iconRotation: 0
+    iconScale: {x: 0.25, y: 0.25}
   - color: {r: 0.79215693, g: 0.13725491, b: 0.9333334, a: 1}
     darkColor: {r: 0.41960788, g: 0.10196079, b: 0.54901963, a: 1}
-    shapeIcon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-    iconPosition: {x: 0, y: 0.03}
-    iconRotation: 180
-    iconScale: {x: 0.65, y: 0.65}
+    shapeIcon: {fileID: 21300000, guid: 086748364d26f064ea3d44297e441a7a, type: 3}
+    iconPosition: {x: 0, y: 0}
+    iconRotation: 0
+    iconScale: {x: 0.325, y: 0.325}

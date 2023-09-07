@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaSkins:
   - {fileID: 11400000, guid: 34ba4cd93e8fda8408f9779697c6dfd6, type: 2}
+  - {fileID: 11400000, guid: 7afa597534cb2944d9673ffbad6cf871, type: 2}

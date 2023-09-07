@@ -26,7 +26,7 @@ public class ManaCycle : MonoBehaviour
     public void InitializeCycle()
     {
 
-        manaColors = StorageAsset.Instance.manaSkins[0].shapes;
+        manaColors = StorageAsset.Instance.manaSkins[1].shapes;
 
         sequence = new int[_cycleLength];
 
