@@ -7,7 +7,7 @@ public class ManaCycle : MonoBehaviour
 {
     public int[] sequence { get; private set; }
 
-    [SerializeField] private ManaColor[] manaColors;
+    private ManaShape[] manaColors;
 
     [SerializeField] private int _cycleLength = 7;
     public int cycleLength {  get { return _cycleLength; } }
@@ -25,6 +25,9 @@ public class ManaCycle : MonoBehaviour
 
     public void InitializeCycle()
     {
+
+        manaColors = StorageAsset.Instance.manaSkins[0].shapes;
+
         sequence = new int[_cycleLength];
 
         // Get at least 1 of each color
@@ -69,24 +72,24 @@ public class ManaCycle : MonoBehaviour
         // LayoutRebuilder.ForceRebuildLayoutImmediate(cycleColorTransform);
     }
 
-    public ManaColor GetManaColor(int index)
+    public ManaShape GetManaColor(int index)
     {
         return manaColors[index];
     }
 }
 
-[System.Serializable]
-public class ManaColor
-{
-    public Color color;
+// [System.Serializable]
+// public class ManaColor
+// {
+//     public Color color;
 
-    public Color darkColor;
+//     public Color darkColor;
 
-    public Sprite shapeIcon;
+//     public Sprite shapeIcon;
 
-    public Vector2 iconPosition;
+//     public Vector2 iconPosition;
 
-    public float iconRotation; // on z axis
+//     public float iconRotation; // on z axis
 
-    public Vector2 iconScale;
-}
+//     public Vector2 iconScale;
+// }

@@ -13,7 +13,7 @@ public class ManaTile : MonoBehaviour
 
     [SerializeField] protected SpriteRenderer iconSprite;
 
-    private ManaColor manaColor;
+    private ManaShape manaShape;
 
     private bool lit;
 
@@ -31,28 +31,28 @@ public class ManaTile : MonoBehaviour
     [SerializeField] protected int _color;
     public int color { get { return _color; } }
 
-    public virtual void SetColor(int c, ManaColor manaColor)
+    public virtual void SetColor(int c, ManaShape manaShape)
     {
-        this.manaColor = manaColor;
+        this.manaShape = manaShape;
         _color = c;
-        sprite.color = manaColor.color;
-        borderSprite.color = manaColor.darkColor;
-        iconSprite.sprite = manaColor.shapeIcon;
-        iconSprite.color = manaColor.darkColor;
-        iconSprite.transform.localPosition = (Vector3)manaColor.iconPosition - Vector3.forward*0.1f;
-        iconSprite.transform.localEulerAngles = new Vector3(0, 0, manaColor.iconRotation);
-        iconSprite.transform.localScale = manaColor.iconScale;
+        sprite.color = manaShape.color;
+        borderSprite.color = manaShape.darkColor;
+        iconSprite.sprite = manaShape.shapeIcon;
+        iconSprite.color = manaShape.darkColor;
+        iconSprite.transform.localPosition = (Vector3)manaShape.iconPosition - Vector3.forward*0.1f;
+        iconSprite.transform.localEulerAngles = new Vector3(0, 0, manaShape.iconRotation);
+        iconSprite.transform.localScale = manaShape.iconScale;
     }
 
     public virtual void Update()
     {
         if (lit)
         {
-            if (manaColor == null) return;
+            if (manaShape == null) return;
             float lightValue = 0.25f + Mathf.PingPong(Time.time*0.75f, 0.25f);
-            sprite.color = Color.Lerp(manaColor.color, Color.white, lightValue);
-            borderSprite.color = Color.Lerp(manaColor.darkColor, Color.white, lightValue*0.5f);
-            iconSprite.color = Color.Lerp(manaColor.darkColor, Color.white, lightValue * 0.5f);
+            sprite.color = Color.Lerp(manaShape.color, Color.white, lightValue);
+            borderSprite.color = Color.Lerp(manaShape.darkColor, Color.white, lightValue*0.5f);
+            iconSprite.color = Color.Lerp(manaShape.darkColor, Color.white, lightValue * 0.5f);
         }
     }
 
@@ -60,10 +60,10 @@ public class ManaTile : MonoBehaviour
     {
         if (this.lit && !lit)
         {
-            sprite.color = manaColor.color;
-            borderSprite.color = manaColor.darkColor;
-            iconSprite.sprite = manaColor.shapeIcon;
-            iconSprite.color = manaColor.darkColor;
+            sprite.color = manaShape.color;
+            borderSprite.color = manaShape.darkColor;
+            iconSprite.sprite = manaShape.shapeIcon;
+            iconSprite.color = manaShape.darkColor;
         }
         this.lit = lit;
     }
