@@ -221,6 +221,7 @@ public class Spellcasting : MonoBehaviour
         // Don't add if no tile or incorrect color
         var tile = tiles[x, y];
         if (!tile) return count;
+        
         int tileColor = tile.color;
         if (color != tileColor) return count;
 

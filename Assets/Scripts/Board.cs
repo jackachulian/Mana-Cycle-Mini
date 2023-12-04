@@ -116,7 +116,7 @@ public class Board : MonoBehaviour
 
     public void ClearTile(int x, int y)
     {
-        ManaTile tile = tiles[x, y];
+        ManaTile tile = GetTile(x, y);
         if (!tile) return;
         tiles[x, y] = null;
         Destroy(tile.gameObject);

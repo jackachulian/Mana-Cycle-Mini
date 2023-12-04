@@ -9,6 +9,8 @@ public class ManaCycle : MonoBehaviour
 
     private ManaShape[] manaColors;
 
+    [SerializeField] private ManaSkins manaSkin;
+
     [SerializeField] private int _cycleLength = 7;
     public int cycleLength {  get { return _cycleLength; } }
 
@@ -26,7 +28,7 @@ public class ManaCycle : MonoBehaviour
     public void InitializeCycle()
     {
 
-        manaColors = StorageAsset.Instance.manaSkins[0].shapes;
+        manaColors = manaSkin.shapes;
 
         sequence = new int[_cycleLength];
 
